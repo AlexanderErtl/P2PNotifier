@@ -1,0 +1,10 @@
+*General Communication Infrastructure (WiFi, Bluetooth, etc.)
+
+*Key generation, sharing
+
+*Android Specifics (keys etc.)
+
+*Android App (GUI)
+
+*Desktop App (GUI)
+
