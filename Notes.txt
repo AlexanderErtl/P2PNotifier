@@ -1,10 +1,11 @@
-*General Communication Infrastructure (WiFi, Bluetooth, etc.)
+
+Aleksa: *General Communication Infrastructure (WiFi) 
 
 *Key generation, sharing
 
 *Android Specifics (keys etc.)
 
-*Android App (GUI)
+Alex: Android App (GUI)
 
-*Desktop App (GUI)
+Jan: *Desktop App (GUI)
 
