@@ -23,3 +23,7 @@ To install the python dependencies run `poetry install` in the `notification-ser
 To execute the server you can run the command `poetry run notification-server`.
 
 It will use the configuration saved in `config.yml`. All configuration parameters can also be set as commandline parameters. To find a full list of parameters run `poetry run notification-server --help`.
+
+## Testing the Server
+
+An easy way to test the server is to use the `telnet` client. Connect to `localhost` on port `12345` and send any newline seperated messages. The messages should appear as system notifications which should be visible for 5 seconds.
