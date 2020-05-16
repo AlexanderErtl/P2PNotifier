@@ -8,7 +8,7 @@ authors = ["Jan Kowalczyk <jan.p.kowalczyk@student.tugraz.at>"]
 notification-server = 'notification_server:main'
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.6"
 py-notifier = "^0.1.0"
 pystray = "^0.15.0"
 ConfigArgParse = "^1.2.3"
