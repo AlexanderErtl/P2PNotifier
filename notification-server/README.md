@@ -2,6 +2,8 @@
 
 This notification server currently opens a TCP socket and accepts connections from any source. It will display each message it receives (UTF-8 seperated by newlines) as desktop notifications using [py-notifier](https://github.com/YuriyLisovskiy/pynotifier).
 
+In the future we will have to specify a custom message format other than newline seperated, this is just for testing. Also this is a pure TCP socket and doesn't include any encryption. We may switch to a TSL socket or similar in the future.
+
 The server is currently tested on Arch Linux, Gnome3 as desktop environment and Python >= 3.6.0.
 
 # Setup
