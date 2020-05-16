@@ -4,7 +4,9 @@ This notification server currently opens a TCP socket and accepts connections fr
 
 In the future we will have to specify a custom message format other than newline seperated, this is just for testing. Also this is a pure TCP socket and doesn't include any encryption. We may switch to a TSL socket or similar in the future.
 
-The server is currently tested on Arch Linux, Gnome3 as desktop environment and Python >= 3.6.0.
+The server is currently tested on the following platforms:
+* Arch Linux, Gnome3 DE, Python >= 3.6.0
+* Windows 10, Python 3.8.3 (current Bug -> only one notification works at a time, will fix in future versions)
 
 # Setup
 
