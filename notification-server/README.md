@@ -27,3 +27,5 @@ It will use the configuration saved in `config.yml`. All configuration parameter
 ## Testing the Server
 
 An easy way to test the server is to use the `telnet` client. Connect to `localhost` on port `12345` and send any newline seperated messages. The messages should appear as system notifications which should be visible for 5 seconds.
+
+On windows you may have to enable the telnet client. Just search for `telnet` in the settings and you should find a way to enable it or follow this [Guide](https://social.technet.microsoft.com/wiki/contents/articles/38433.windows-10-enabling-telnet-client.aspx).
