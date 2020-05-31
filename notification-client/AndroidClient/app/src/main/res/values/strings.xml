@@ -7,6 +7,7 @@
     <string name="send">Send</string>
     <string name="type_in_a_message">Type in a message</string>
     <string name="write_a_message">Write a message...</string>
+    <string name="scan">scan</string>
 
     <string-array name="Programming_languages">
         <item>C</item>
