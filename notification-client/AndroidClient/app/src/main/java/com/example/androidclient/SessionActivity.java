@@ -13,7 +13,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androidclient.ssl.MyPSKKeyManager;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.conscrypt.*;
+
+import javax.crypto.ExemptionMechanismException;
+import javax.net.SocketFactory;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 
 public class SessionActivity extends AppCompatActivity {
 
@@ -51,7 +64,8 @@ public class SessionActivity extends AppCompatActivity {
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
         progress.show();
-        c = new ClientThread(ipAddress, Integer.parseInt(port), myAdapter, this);
+        //c = new ClientThread(ipAddress, Integer.parseInt(port), myAdapter, this);
+        c = new ClientThread("10.0.2.2", 4433, myAdapter, this);
         clientThread = new Thread(c);
         clientThread.start();
 

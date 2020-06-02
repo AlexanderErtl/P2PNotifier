@@ -81,14 +81,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openSessionActivity() {
-
+/*
         if(!ipValid) {
             ip.setError("Input missing.");
             return;
         }else if(!portValid) {
             port.setError("Input missing.");
             return;
-        }
+        }*/
 
         Intent intent = new Intent(this, SessionActivity.class);
         intent.putExtra("ip", ip.getText().toString());
