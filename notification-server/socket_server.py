@@ -2,7 +2,7 @@ from OpenSSL.SSL import Context, Connection, TLSv1_2_METHOD, Error
 from openssl_psk import patch_context
 from socket import create_server
 
-from multiprocessing import Process
+from threading import Thread
 from typing import Callable
 from functools import partial
 
@@ -13,13 +13,14 @@ def get_secret(conn, client_identity, secrets):
     print(f"client_identity: {client_identity}")
     return secrets[client_identity]
 
-def serve(config, handle_message : Callable[[str, str], None]) -> None:
+def serve(socket, handle_message : Callable[[str, str], None], running : bool) -> None:
     patch_context()
 
     try: 
-        secrets = pickle.load(open(config.secrets_file, "rb"))
+        # todo fix hardcoded secrets
+        secrets = pickle.load(open("SECRETS", "rb"))
     except:
-        print(f"Couldn't open secrets file '{config.secrets_file}'!")
+        print(f"Couldn't open secrets file '{SECRETS}'!")
         return
 
     ctx = Context(TLSv1_2_METHOD)
@@ -28,30 +29,30 @@ def serve(config, handle_message : Callable[[str, str], None]) -> None:
     partial_get_secret = partial(get_secret, secrets=secrets)
     ctx.set_psk_server_callback(partial_get_secret)
 
-    addr = ("", config.port)
-    server = Connection(ctx, create_server(addr))
+    server = Connection(ctx, socket)
 
     open_sockets = []
 
-    print(f"Serving on port: {config.port}")
-    try:
-        while True:
+    addr, port = socket.getsockname()
+    print(f"Serving on: {addr}:{port}")
+    while running:
+        try:
             client_socket, from_addr = server.accept()
-            print(f"Accepted connection from: {from_addr}")
-            process = Process(target=handle_client, args=(client_socket, handle_message, ))
-            process.start()
-            open_sockets.append(process)
+        except:
+            continue
 
-            for process in open_sockets:
-                if not process.is_alive():
-                    process.join()
+        addr, port = from_addr
+        print(f"Accepted connection from {addr}:{port}")
+        thread = Thread(target=handle_client, args=(client_socket, handle_message, ))
+        thread.start()
+        open_sockets.append(thread)
 
-    except KeyboardInterrupt:
-        print("\nShutting down server...")
-        return
-    finally:
-        for process in open_sockets:
-            process.join()
+        for thread in open_sockets:
+            if not thread.is_alive():
+                thread.join()
+
+    for thread in open_sockets:
+        thread.join()
 
 
 def handle_client(socket, handle_message : Callable[[str, str], None]) -> None:
@@ -68,10 +69,12 @@ def handle_client(socket, handle_message : Callable[[str, str], None]) -> None:
             continue
         except Error as error_inst:
             print("OpenSSL Error: ", error_inst)
-            print("Socket closed")
+            addr, port = socket.getpeername()
+            print(f"Socket {addr}:{port} closed")
             return
         except:
             print("Unexpected error: ", sys.exc_info()[0])
-            print("Socket closed")
+            addr, port = socket.getpeername()
+            print(f"Socket {addr}:{port} closed")
             return
 

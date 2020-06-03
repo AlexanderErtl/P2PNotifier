@@ -1,12 +1,40 @@
 from configargparse import ArgParser, Namespace, YAMLConfigFileParser
+from threading import Thread
 from sys import exit
+from socket import create_server, SHUT_RDWR
 
-from notification_handler import notify
 from socket_server import serve
+from notification_handler import notify
+from tray_icon_handler import get_tray_icon
+
+from functools import partial
+from typing import List
+
+
 
 def main() -> int:
+    running = [True]
     config = parse_config()
-    serve(config, handle_msg)
+
+    icon = get_tray_icon()
+    socket = create_server(("", config.port))
+
+    network_thread = Thread(target=serve, args=(socket, handle_msg, running, ))
+    network_thread.start()
+
+    try:
+        icon.run()
+    except AttributeError:
+        # Can't get rid of a strange AttributeError, not sure if upstream bug
+        pass
+    except Exception as ex:
+        print("Unknown Error: ", ex)
+
+    print("Shutting down server...")
+    running.clear()
+    socket.shutdown(SHUT_RDWR)
+
+    network_thread.join()
     return 0
 
 def handle_msg(title: str, msg : str) -> None:
