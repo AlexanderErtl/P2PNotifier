@@ -1,6 +1,7 @@
 from pynotifier import Notification
 
 def notify(title : str, msg : str) -> None:
+    print(f"Sending notification: Title: '{title}' Message: '{msg}'")
     Notification(
 	title=title,
 	description=msg,
