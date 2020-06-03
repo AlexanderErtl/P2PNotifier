@@ -43,6 +43,7 @@ public class SessionActivity extends AppCompatActivity {
             } else if(Utils.SOCKET_DISCONNECTED.equals(message)) {
                 endActivity();
             } else {
+                System.out.println(intent.getAction());
                 myAdapter.messages.add(new Message(message, Utils.MESSAGE_TYPE_RECEIVED));
                 myAdapter.notifyItemInserted(myAdapter.messages.size());
             }
@@ -53,8 +54,12 @@ public class SessionActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Utils.INTENT_ACTION_MESSAGE_RECEIVED);
+        intentFilter.addAction(Utils.INTENT_ACTION_SOCKET_STATE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
 
         boolean freshStart = true;
         String messageAfterResume = getIntent().getStringExtra(Utils.INTENT_MESSAGE);
@@ -140,11 +145,6 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Utils.INTENT_ACTION_MESSAGE_RECEIVED);
-        intentFilter.addAction(Utils.INTENT_ACTION_SOCKET_STATE);
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
@@ -180,3 +180,11 @@ public class SessionActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 }
+
+//TODO: Connect -> Destroy activity -> Receive notification -> press Disconnect
+// - currently: Closes the app
+// - how it should be: returns to the main activity (this works if session activity not destroyed)
+
+//TODO: Connect -> Destroy activity -> Start the app while receive message service is running in the background
+// - currently: Starts an app from main activity
+// - how it should be: opens session activity directly since receive message service is already connected

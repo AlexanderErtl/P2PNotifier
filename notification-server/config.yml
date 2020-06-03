@@ -1,2 +1,4 @@
 # Port for server to run on
-port : 12345
+port : 4433
+# File path to connection secrets
+secrets-file: SECRETS

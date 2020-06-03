@@ -59,6 +59,11 @@ public class ReceiveMessageService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Utils.INTENT_ACTION_SEND_MESSAGE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+
         nm = NotificationManagerCompat.from(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_PERSISTENT)
@@ -73,10 +78,6 @@ public class ReceiveMessageService extends IntentService {
     @Override
     public void onStart(@Nullable Intent intent, int startId) {
         super.onStart(intent, startId);
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Utils.INTENT_ACTION_SEND_MESSAGE);
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
     }
 
     public ReceiveMessageService() {
