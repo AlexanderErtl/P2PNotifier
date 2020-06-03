@@ -26,7 +26,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder > {
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(ct);
         View view;
-        if(MessageType.MESSAGE_RECEIVED.ordinal() == viewType) {
+        if(Utils.MESSAGE_TYPE_RECEIVED == viewType) {
             view = inflater.inflate(R.layout.my_row, parent, false);
         } else {
             view = inflater.inflate(R.layout.my_row_2, parent, false);
@@ -38,7 +38,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder > {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.title.setText(messages.get(position).getMessage());
-        //holder.description.setText(data2[position]);
     }
 
     @Override
@@ -52,12 +51,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder > {
 
       public MyViewHolder(@NonNull View itemView) {
           super(itemView);
-          title = itemView.findViewById(R.id.prog_lang_title);
+          title = itemView.findViewById(R.id.message_text);
       }
   }
 
     @Override
     public int getItemViewType(int position) {
-        return messages.get(position).getType().ordinal();
+        return messages.get(position).getType();
     }
 }
