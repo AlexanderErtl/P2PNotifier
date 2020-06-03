@@ -11,6 +11,15 @@ pycparser = "*"
 
 [[package]]
 category = "main"
+description = "Cross-platform colored terminal text."
+marker = "platform_system == \"Windows\""
+name = "colorama"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "0.4.3"
+
+[[package]]
+category = "main"
 description = "A drop-in replacement for argparse that allows options to also be set via config files and/or environment variables."
 name = "configargparse"
 optional = false
@@ -181,6 +190,28 @@ version = "5.3.1"
 
 [[package]]
 category = "main"
+description = "QR Code image generator"
+name = "qrcode"
+optional = false
+python-versions = "*"
+version = "6.1"
+
+[package.dependencies]
+colorama = "*"
+six = "*"
+
+[package.dependencies.pillow]
+optional = true
+version = "*"
+
+[package.extras]
+dev = ["tox", "pytest", "mock"]
+maintainer = ["zest.releaser"]
+pil = ["pillow"]
+test = ["pytest", "pytest-cov", "mock"]
+
+[[package]]
+category = "main"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
@@ -188,7 +219,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 version = "1.14.0"
 
 [metadata]
-content-hash = "1e6b5034f1b68057a5d31d38a343cdee3f915f66d615fa2bfd3ab3fe873ff994"
+content-hash = "ca9214118b92b6963bc68a98ac1cfa8e9d1a2b0793f197c952b6ce4eb6dbd359"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -221,6 +252,10 @@ cffi = [
     {file = "cffi-1.14.0-cp38-cp38-win32.whl", hash = "sha256:675686925a9fb403edba0114db74e741d8181683dcf216be697d208857e04ca8"},
     {file = "cffi-1.14.0-cp38-cp38-win_amd64.whl", hash = "sha256:00789914be39dffba161cfc5be31b55775de5ba2235fe49aa28c148236c4e06b"},
     {file = "cffi-1.14.0.tar.gz", hash = "sha256:2d384f4a127a15ba701207f7639d94106693b6cd64173d6c8988e2c25f3ac2b6"},
+]
+colorama = [
+    {file = "colorama-0.4.3-py2.py3-none-any.whl", hash = "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff"},
+    {file = "colorama-0.4.3.tar.gz", hash = "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"},
 ]
 configargparse = [
     {file = "ConfigArgParse-1.2.3.tar.gz", hash = "sha256:edd17be986d5c1ba2e307150b8e5f5107aba125f3574dddd02c85d5cdcfd37dc"},
@@ -330,6 +365,10 @@ pyyaml = [
     {file = "PyYAML-5.3.1-cp38-cp38-win32.whl", hash = "sha256:06a0d7ba600ce0b2d2fe2e78453a470b5a6e000a985dd4a4e54e436cc36b0e97"},
     {file = "PyYAML-5.3.1-cp38-cp38-win_amd64.whl", hash = "sha256:95f71d2af0ff4227885f7a6605c37fd53d3a106fcab511b8860ecca9fcf400ee"},
     {file = "PyYAML-5.3.1.tar.gz", hash = "sha256:b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"},
+]
+qrcode = [
+    {file = "qrcode-6.1-py2.py3-none-any.whl", hash = "sha256:3996ee560fc39532910603704c82980ff6d4d5d629f9c3f25f34174ce8606cf5"},
+    {file = "qrcode-6.1.tar.gz", hash = "sha256:505253854f607f2abf4d16092c61d4e9d511a3b4392e60bff957a68592b04369"},
 ]
 six = [
     {file = "six-1.14.0-py2.py3-none-any.whl", hash = "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"},

@@ -6,20 +6,21 @@ from socket import create_server, SHUT_RDWR
 from socket_server import serve
 from notification_handler import notify
 from tray_icon_handler import get_tray_icon
+from secrets_handler import SecretsHandler
 
 from functools import partial
 from typing import List
-
 
 
 def main() -> int:
     running = [True]
     config = parse_config()
 
-    icon = get_tray_icon()
+    secrets_handler = SecretsHandler(config.secrets_file)
+    icon = get_tray_icon(secrets_handler.get_new_secret)
     socket = create_server(("", config.port))
 
-    network_thread = Thread(target=serve, args=(socket, handle_msg, running, ))
+    network_thread = Thread(target=serve, args=(socket, secrets_handler.get_secrets, handle_msg, running, ))
     network_thread.start()
 
     try:

@@ -1,32 +1,23 @@
 from OpenSSL.SSL import Context, Connection, TLSv1_2_METHOD, Error
 from openssl_psk import patch_context
-from socket import create_server
 
 from threading import Thread
-from typing import Callable
+from typing import Callable, List, Tuple
 from functools import partial
 
-import pickle
 import sys
 
-def get_secret(conn, client_identity, secrets):
+def get_secret(conn, client_identity, get_secrets):
     print(f"client_identity: {client_identity}")
-    return secrets[client_identity]
+    return get_secrets()[client_identity]
 
-def serve(socket, handle_message : Callable[[str, str], None], running : bool) -> None:
+def serve(socket, get_secrets : Callable[[None], List[Tuple[bytes, bytes]]], handle_message : Callable[[str, str], None], running : bool) -> None:
     patch_context()
-
-    try: 
-        # todo fix hardcoded secrets
-        secrets = pickle.load(open("SECRETS", "rb"))
-    except:
-        print(f"Couldn't open secrets file '{SECRETS}'!")
-        return
 
     ctx = Context(TLSv1_2_METHOD)
     ctx.set_cipher_list(b'ECDHE-PSK-CHACHA20-POLY1305')
     ctx.use_psk_identity_hint(b'our_chosen_server_identity_hint')
-    partial_get_secret = partial(get_secret, secrets=secrets)
+    partial_get_secret = partial(get_secret, get_secrets=get_secrets)
     ctx.set_psk_server_callback(partial_get_secret)
 
     server = Connection(ctx, socket)
