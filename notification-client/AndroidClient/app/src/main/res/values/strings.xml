@@ -7,22 +7,6 @@
     <string name="send">Send</string>
     <string name="type_in_a_message">Type in a message</string>
     <string name="write_a_message">Write a message...</string>
+    <string name="disconnect">Disconnect</string>
     <string name="scan">scan</string>
-
-    <string-array name="Programming_languages">
-        <item>C</item>
-        <item>C++</item>
-        <item>Java</item>
-        <item>Scala</item>
-        <item>Python</item>
-    </string-array>
-
-    <string-array name="description">
-        <item>Great</item>
-        <item>Okay</item>
-        <item>Good</item>
-        <item>Terible</item>
-        <item>Noice</item>
-    </string-array>
-
 </resources>

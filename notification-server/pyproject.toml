@@ -10,9 +10,12 @@ notification-server = 'notification_server:main'
 [tool.poetry.dependencies]
 python = "^3.6"
 py-notifier = "^0.1.0"
-pystray = "^0.15.0"
+pystray = { git = "https://github.com/moses-palmer/pystray.git", branch = "master" }
 ConfigArgParse = "^1.2.3"
 PyYAML = "^5.3.1"
+PyGObject = "^3.36.1"
+pyopenssl-psk = "^1.0.0"
+qrcode = {extras = ["pil"], version = "^6.1"}
 
 [tool.poetry.dev-dependencies]
 

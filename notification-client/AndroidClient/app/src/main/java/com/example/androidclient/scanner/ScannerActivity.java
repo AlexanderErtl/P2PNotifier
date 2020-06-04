@@ -31,8 +31,6 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         setContentView(R.layout.activity_scanner);
         //setupToolbar();
 
-
-
         ViewGroup contentFrame = (ViewGroup) findViewById(R.id.content_frame);
         scannerView = new ZXingScannerView(this);
         contentFrame.addView(scannerView);

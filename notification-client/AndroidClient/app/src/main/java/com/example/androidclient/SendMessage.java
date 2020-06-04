@@ -9,23 +9,18 @@ class SendMessage extends AsyncTask<String, Void, String> {
     private PrintWriter pw;
     private MyAdapter myAdapter;
 
-    public SendMessage(PrintWriter pw, MyAdapter myAdapter) {
+    public SendMessage() {
         super();
-        this.pw = pw;
-        this.myAdapter = myAdapter;
     }
 
     protected String doInBackground(String... strings) {
-        String message = strings[0];
-        pw.println (message);
-        pw.flush();
-        System.out.println("SENT");
-        return message;
+
+        return null;
     }
 
     @Override
     protected void onPostExecute(String message) {
-        myAdapter.messages.add(new Message(message, MessageType.MESSAGE_SENT));
+        myAdapter.messages.add(new Message(message, Utils.MESSAGE_TYPE_SENT));
         myAdapter.notifyItemInserted(myAdapter.messages.size());
     }
 }
