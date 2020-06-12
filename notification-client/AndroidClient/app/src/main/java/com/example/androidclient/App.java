@@ -3,14 +3,17 @@ package com.example.androidclient;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Build;
 
 public class App extends Application {
     public static final String CHANNEL_PERSISTENT = "clientChannel";
     public static final String CHANNEL_MESSAGES = "receiveMessageService";
+    private static Context appContext;
 
     public void onCreate() {
         super.onCreate();
+        appContext = getApplicationContext();
 
         createNotificationChannel();
     }
@@ -30,4 +33,9 @@ public class App extends Application {
             manager.createNotificationChannel(serviceMessagesChannel);
         }
     }
+
+    public static Context getAppContext() {
+        return appContext;
+    }
+
 }

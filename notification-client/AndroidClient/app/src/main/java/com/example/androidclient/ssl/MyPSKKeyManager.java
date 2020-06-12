@@ -1,5 +1,13 @@
 package com.example.androidclient.ssl;
 
+import android.util.Base64;
+
+import com.example.androidclient.Crypto;
+import com.example.androidclient.Utils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.Socket;
 
 import javax.crypto.SecretKey;
@@ -35,9 +43,17 @@ public class MyPSKKeyManager implements org.conscrypt.PSKKeyManager {
     @Override
     public SecretKey getKey(String identityHint, String identity, Socket socket) {
         System.out.println("getKey: socket");
-        // TODO: read psk from keystore
-        byte[] bytes = new byte[] {0x1a, 0x2b, 0x3c, 0x4d};
-        SecretKeySpec key = new SecretKeySpec(bytes, "AES");
+        byte[] keyBytes = null;
+        try {
+            byte[] bytes = Crypto.decrypt();
+            JSONObject jsonObject = new JSONObject(bytes.toString());
+            String key = jsonObject.getString(Utils.JSON_SECRET_KEY);
+            keyBytes = Base64.decode(key, Base64.DEFAULT);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //byte[] keyBytes = new byte[] {0x1a, 0x2b, 0x3c, 0x4d};
+        SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
         System.out.println(key.getEncoded());
         System.out.println(key);
         return key;

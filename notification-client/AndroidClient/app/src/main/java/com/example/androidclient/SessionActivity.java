@@ -109,7 +109,8 @@ public class SessionActivity extends AppCompatActivity {
         }
 
         Intent serviceIntent = new Intent(this, ReceiveMessageService.class);
-        serviceIntent.putExtra(Utils.INTENT_IP, "192.168.1.106");
+        //serviceIntent.putExtra(Utils.INTENT_IP, "192.168.1.106");
+        serviceIntent.putExtra(Utils.INTENT_IP, "10.0.2.2");
         serviceIntent.putExtra(Utils.INTENT_PORT, Integer.toString(4433));
         startForegroundService(serviceIntent);
 

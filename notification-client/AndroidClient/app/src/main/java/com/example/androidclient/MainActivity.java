@@ -18,6 +18,9 @@ import androidx.core.content.ContextCompat;
 import com.example.androidclient.scanner.ScannerActivity;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText ip;
@@ -128,25 +131,21 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (requestCode == SCAN_REQUEST) {
             if (resultCode == RESULT_OK) {
-                System.out.println(data.getDataString());
-                Toast.makeText(this, data.getDataString(), Toast.LENGTH_LONG).show();
-                // Only for demonstration purposes, e.g. IP:192.168.1.105, Port:7878
-                String serverData = data.getDataString();
-                String[] ipPort = serverData.split(",");
-                if(ipPort.length != 2) {
-                    System.out.println("Invalid QR code.");
-                } else {
-                    String[] ip = ipPort[0].split(":");
-                    String[] port = ipPort[1].split(":");
-
-                    if(ip.length != 2 || port.length != 2) {
-                        System.out.println("Invaild QR code.");
-                    } else {
-                        this.ip.setText(ip[1]);
-                        this.port.setText(port[1]);
-                        System.out.println("IP: " + ip[1]);
-                        System.out.println("PORT: " + port[1]);
-                    }
+                //String dataString = data.getDataString();
+                String dataString = null;
+                try {
+                    JSONObject obj = new JSONObject();
+                    obj.put(Utils.JSON_IDENTITY_KEY, "qQh2Sckn7cA=");
+                    obj.put(Utils.JSON_SECRET_KEY, "vReaezWS7VJWt51UMDyHzVIDPQddUyTpJRRG5dVJnjU=");
+                    dataString = obj.toString();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(dataString);
+                try {
+                    handleScanResult(dataString);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
             else {
@@ -154,6 +153,17 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Scan failed", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void handleScanResult(String result) throws JSONException {
+        JSONObject jsonObject = new JSONObject(result);
+        String identity = jsonObject.getString(Utils.JSON_IDENTITY_KEY);
+        String secret = jsonObject.getString(Utils.JSON_SECRET_KEY);
+        Crypto.encryptAndWriteToDisk(false, result);
+        Toast.makeText(this, "Successfully saved new identity!", Toast.LENGTH_SHORT).show();
+        //TODO: set ip and port
+        //String ip = jsonObject.getString("ip");
+        //String port = jsonObject.getString("port");
     }
 
     @Override
