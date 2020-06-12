@@ -2,6 +2,7 @@ from configargparse import ArgParser, Namespace, YAMLConfigFileParser
 from threading import Thread
 from sys import exit
 from socket import create_server, SHUT_RDWR
+import netifaces as ni
 
 from socket_server import serve
 from notification_handler import notify
@@ -13,11 +14,18 @@ from typing import List
 
 
 def main() -> int:
+
+
     running = [True]
     config = parse_config()
 
+    addresses = []
+    for interface in (i for i in ni.interfaces() if i != "lo"):
+        addresses.append(ni.ifaddresses(interface)[ni.AF_INET][0]['addr'])
+    config.addresses = addresses
+
     secrets_handler = SecretsHandler(config.secrets_file)
-    icon = get_tray_icon(secrets_handler.get_new_secret)
+    icon = get_tray_icon(config, secrets_handler.get_new_secret)
     socket = create_server(("", config.port))
 
     network_thread = Thread(target=serve, args=(socket, secrets_handler.get_secrets, handle_msg, running, ))

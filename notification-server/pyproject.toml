@@ -16,6 +16,7 @@ PyYAML = "^5.3.1"
 PyGObject = "^3.36.1"
 pyopenssl-psk = "^1.0.0"
 qrcode = {extras = ["pil"], version = "^6.1"}
+netifaces = "^0.10.9"
 
 [tool.poetry.dev-dependencies]
 
