@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
         progress.show();
+        enableMainActivityElements(false);
 
         Intent serviceIntent = new Intent(this, ReceiveMessageService.class);
         //serviceIntent.putExtra(Utils.INTENT_IP, "192.168.1.106");
@@ -212,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
         startForegroundService(serviceIntent);
 
         startSession.setText("Disconnect");
-        enableMainActivityElements(false);
     }
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

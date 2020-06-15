@@ -54,8 +54,13 @@ public class ReceiveMessageService extends Service {
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
 
         ipAddress = intent.getStringExtra(Utils.INTENT_IP);
-        port = Integer.parseInt(intent.getStringExtra(Utils.INTENT_PORT));
-
+        String portString = intent.getStringExtra(Utils.INTENT_PORT);
+        try {
+            port = Integer.parseInt(portString);
+        } catch (Exception e) {
+            System.out.println("Could not parse port '" +  portString + "'");
+            port = 0;
+        }
 
         nm = NotificationManagerCompat.from(this);
         Intent mainIntent = new Intent(this, MainActivity.class);
