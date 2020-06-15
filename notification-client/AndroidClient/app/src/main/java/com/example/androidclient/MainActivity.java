@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     startSession.setText("Connect");
                     enableMainActivityElements(true);
-                    stopService(new Intent(v.getContext(), ReceiveMessageService.class));
+                    stopService(new Intent(v.getContext(), SendNotificationService.class));
                 } else {
                     boolean hasAccess = checkNotificationListenerPermission();
                     if (!hasAccess) {
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
         progress.show();
         enableMainActivityElements(false);
 
-        Intent serviceIntent = new Intent(this, ReceiveMessageService.class);
+        Intent serviceIntent = new Intent(this, SendNotificationService.class);
         //serviceIntent.putExtra(Utils.INTENT_IP, "192.168.1.106");
         //serviceIntent.putExtra(Utils.INTENT_PORT, Integer.toString(4433));
         serviceIntent.putExtra(Utils.INTENT_IP, ip.getText().toString());

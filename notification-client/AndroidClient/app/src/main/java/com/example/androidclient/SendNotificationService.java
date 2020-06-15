@@ -36,7 +36,7 @@ import javax.net.ssl.TrustManager;
 import static com.example.androidclient.App.CHANNEL_MESSAGES;
 import static com.example.androidclient.App.CHANNEL_PERSISTENT;
 
-public class ReceiveMessageService extends Service {
+public class SendNotificationService extends Service {
 
 
     private SSLSocket clientSocket;

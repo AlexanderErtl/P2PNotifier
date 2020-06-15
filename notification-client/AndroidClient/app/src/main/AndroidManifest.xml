@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".scanner.ScannerActivity" android:parentActivityName=".MainActivity"/>
-        <service android:name=".ReceiveMessageService" />
+        <service android:name=".SendNotificationService" />
         <service
             android:name=".NotificationListener"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >

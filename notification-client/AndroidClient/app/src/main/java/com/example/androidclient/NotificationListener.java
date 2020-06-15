@@ -9,6 +9,9 @@ import android.service.notification.StatusBarNotification;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 @SuppressLint({"OverrideAbstract", "NewApi"})
 public class NotificationListener extends NotificationListenerService {
@@ -19,11 +22,20 @@ public class NotificationListener extends NotificationListenerService {
         if(notification != null) {
             Bundle extras = notification.extras;
             String message = "";
+            JSONObject json = new JSONObject();
+
             // Create json with title, text...
-            if(extras.getString(Notification.EXTRA_TEXT) != null)
-            {
-                message = message.concat(extras.getString(Notification.EXTRA_TEXT));
+            try {
+                json.put("title", extras.getString(Notification.EXTRA_TITLE));
+                json.put("text" ,extras.getString(Notification.EXTRA_TEXT));
+                json.put("info_text" ,extras.getString(Notification.EXTRA_INFO_TEXT));
+                json.put("messaging_person" ,extras.getString(Notification.EXTRA_MESSAGING_PERSON));
+            } catch (JSONException e) {
+                System.out.println("Json went wrong.");
+                e.printStackTrace();
             }
+
+            message = json.toString();
 
             Intent intent = new Intent();
             intent.setAction(Utils.INTENT_ACTION_SEND_MESSAGE);
