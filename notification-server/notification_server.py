@@ -21,7 +21,10 @@ def main() -> int:
 
     addresses = []
     for interface in (i for i in ni.interfaces() if i != "lo"):
-        addresses.append(ni.ifaddresses(interface)[ni.AF_INET][0]['addr'])
+        try:
+            addresses.append(ni.ifaddresses(interface)[ni.AF_INET][0]['addr'])
+        except KeyError:
+            continue
     config.addresses = addresses
 
     secrets_handler = SecretsHandler(config.secrets_file)
