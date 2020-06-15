@@ -3,6 +3,7 @@ from threading import Thread
 from sys import exit
 from socket import create_server, SHUT_RDWR
 import netifaces as ni
+import json
 
 from socket_server import serve
 from notification_handler import notify
@@ -50,7 +51,13 @@ def main() -> int:
     return 0
 
 def handle_msg(title: str, msg : str) -> None:
-    notify(title, msg)
+    try:
+        notification_json = json.loads(msg)
+        notify(notification_json["title"], notification_json["text"])
+    except json.JSONDecodeError:
+        print("Error while decoding JSON!")
+    except:
+        pass
 
 def parse_config() -> Namespace:
     parser = ArgParser(config_file_parser_class = YAMLConfigFileParser, default_config_files = ["config.yml"])
