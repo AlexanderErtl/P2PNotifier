@@ -11,6 +11,7 @@ public class Utils {
     public static final String INTENT_IP = "ip";
     public static final String INTENT_PORT = "port";
     public static final String CONNECTION_FAILED = "Connection failed.";
+    public static final String PERMISSION_DENIED = "Permission denied.";
     public static final String INTENT_MESSAGE = "message";
     public static final String INTENT_ACTION_SEND_MESSAGE = "message_send";
     public static final String INTENT_ACTION_MESSAGE_RECEIVED = "message_received";

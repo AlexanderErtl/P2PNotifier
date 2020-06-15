@@ -1,19 +1,28 @@
 package com.example.androidclient;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.androidclient.scanner.ScannerActivity;
 import com.google.android.material.snackbar.Snackbar;
@@ -25,16 +34,26 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText ip;
     private EditText port;
+    Button startSession;
+    Button scanButton;
+    ProgressDialog progress;
     private boolean ipValid = false;
     private  boolean portValid = false;
 
     private final int LAUNCH_SECOND_ACTIVITY = 1;
     private final int SCAN_REQUEST = 2;
+    private final int NOTIFICATION_LISTENER_REQUEST = 5;
     private static final int ZXING_CAMERA_PERMISSION = 3;
+    private static final String CONNECTION_STATE = "connection state";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Utils.INTENT_ACTION_MESSAGE_RECEIVED);
+        intentFilter.addAction(Utils.INTENT_ACTION_SOCKET_STATE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -71,15 +90,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button startSession = findViewById((R.id.button_startSession));
+        startSession = findViewById((R.id.button_startSession));
         startSession.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                openSessionActivity();
+                if("Disconnect".equals(startSession.getText()))
+                {
+                    startSession.setText("Connect");
+                    enableMainActivityElements(true);
+                    stopService(new Intent(v.getContext(), ReceiveMessageService.class));
+                } else {
+                    boolean hasAccess = checkNotificationListenerPermission();
+                    if (!hasAccess) {
+                        startActivityForResult(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS), NOTIFICATION_LISTENER_REQUEST);
+                    } else {
+                        startNotifier();
+                    }
+                }
             }
         });
 
-        Button scanButton = findViewById(R.id.button_scan);
+        scanButton = findViewById(R.id.button_scan);
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,23 +120,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void openSessionActivity() {
-
-
-        /*
-        if(!ipValid) {
-            ip.setError(Utils.INVALID_INPUT);
-            return;
-        }else if(!portValid) {
-            port.setError(Utils.INVALID_INPUT);
-            return;
-        }*/
-
-        Intent intent = new Intent(this, SessionActivity.class);
-        intent.putExtra(Utils.INTENT_IP, ip.getText().toString());
-        intent.putExtra(Utils.INTENT_PORT, port.getText().toString());
-        startActivityForResult(intent, Utils.LAUNCH_SECOND_ACTIVITY);
-    }
 
     public void openScanActivity() {
         System.out.println("Scanning");
@@ -119,17 +134,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
-            if (resultCode == -1) {
-                View parentLayout = findViewById(android.R.id.content);
-                Snackbar.make(parentLayout, Utils.CONNECTION_FAILED, Snackbar.LENGTH_LONG).show();
-            }
-        }
-        else if (requestCode == SCAN_REQUEST) {
+       if (requestCode == SCAN_REQUEST) {
             if (resultCode == RESULT_OK) {
                 String dataString = data.getDataString();
                 //String dataString = null;
@@ -151,6 +161,15 @@ public class MainActivity extends AppCompatActivity {
             else {
                 System.out.println("Scan failed");
                 Toast.makeText(this, "Scan failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if(requestCode == NOTIFICATION_LISTENER_REQUEST) {
+            boolean hasAccess = checkNotificationListenerPermission();
+            if(!hasAccess) {
+                View parentLayout = findViewById(android.R.id.content);
+                Snackbar.make(parentLayout, Utils.PERMISSION_DENIED, Snackbar.LENGTH_LONG).show();
+            } else {
+                startNotifier();
             }
         }
     }
@@ -178,4 +197,53 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean checkNotificationListenerPermission() {
+        return NotificationManagerCompat.getEnabledListenerPackages(this).contains(getPackageName());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startNotifier() {
+        progress = new ProgressDialog(this);
+        progress.setMessage("Connecting");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
+
+        Intent serviceIntent = new Intent(this, ReceiveMessageService.class);
+        serviceIntent.putExtra(Utils.INTENT_IP, "192.168.1.106");
+        serviceIntent.putExtra(Utils.INTENT_PORT, Integer.toString(4433));
+        startForegroundService(serviceIntent);
+
+        startSession.setText("Disconnect");
+        enableMainActivityElements(false);
+
+
+
+    }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra(Utils.INTENT_MESSAGE);
+            if(Utils.SOCKET_CONNECTED.equals(message)) {
+                progress.cancel();
+            } else if(Utils.SOCKET_DISCONNECTED.equals(message)) {
+                progress.cancel();
+                View parentLayout = findViewById(android.R.id.content);
+                Snackbar.make(parentLayout, Utils.CONNECTION_FAILED, Snackbar.LENGTH_LONG).show();
+                startSession.setText("Connect");
+                enableMainActivityElements(true);
+            }
+        }
+    };
+
+
+    private void enableMainActivityElements(boolean state) {
+        ip.setEnabled(state);
+        ip.setFocusable(state);
+        port.setEnabled(state);
+        port.setFocusable(state);
+        scanButton.setEnabled(state);
+        scanButton.setFocusable(state);
+    }
 }
