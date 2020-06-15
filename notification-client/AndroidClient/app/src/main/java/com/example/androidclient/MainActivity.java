@@ -27,6 +27,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.androidclient.scanner.ScannerActivity;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -142,15 +143,6 @@ public class MainActivity extends AppCompatActivity {
        if (requestCode == SCAN_REQUEST) {
             if (resultCode == RESULT_OK) {
                 String dataString = data.getDataString();
-                //String dataString = null;
-                /*try {
-                    JSONObject obj = new JSONObject();
-                    obj.put(Utils.JSON_IDENTITY_KEY, "qQh2Sckn7cA=");
-                    obj.put(Utils.JSON_SECRET_KEY, "vReaezWS7VJWt51UMDyHzVIDPQddUyTpJRRG5dVJnjU=");
-                    dataString = obj.toString();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
                 System.out.println(dataString);
                 try {
                     handleScanResult(dataString);
@@ -178,11 +170,14 @@ public class MainActivity extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject(result);
         String identity = jsonObject.getString(Utils.JSON_IDENTITY_KEY);
         String secret = jsonObject.getString(Utils.JSON_SECRET_KEY);
+        JSONArray addresses = jsonObject.getJSONArray(Utils.JSON_ADDRESS_KEY);
+        String port_string = jsonObject.getString(Utils.JSON_PORT_KEY);
         Crypto.encryptAndWriteToDisk(false, result);
+        if (addresses.length() != 0) {
+            ip.setText(addresses.getString(0));
+        }
+        port.setText(port_string);
         Toast.makeText(this, "Successfully saved new identity!", Toast.LENGTH_SHORT).show();
-        //TODO: set ip and port
-        //String ip = jsonObject.getString("ip");
-        //String port = jsonObject.getString("port");
     }
 
     @Override
@@ -210,15 +205,14 @@ public class MainActivity extends AppCompatActivity {
         progress.show();
 
         Intent serviceIntent = new Intent(this, ReceiveMessageService.class);
-        serviceIntent.putExtra(Utils.INTENT_IP, "192.168.1.106");
-        serviceIntent.putExtra(Utils.INTENT_PORT, Integer.toString(4433));
+        //serviceIntent.putExtra(Utils.INTENT_IP, "192.168.1.106");
+        //serviceIntent.putExtra(Utils.INTENT_PORT, Integer.toString(4433));
+        serviceIntent.putExtra(Utils.INTENT_IP, ip.getText().toString());
+        serviceIntent.putExtra(Utils.INTENT_PORT, port.getText().toString());
         startForegroundService(serviceIntent);
 
         startSession.setText("Disconnect");
         enableMainActivityElements(false);
-
-
-
     }
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -236,7 +230,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
 
     private void enableMainActivityElements(boolean state) {
         ip.setEnabled(state);

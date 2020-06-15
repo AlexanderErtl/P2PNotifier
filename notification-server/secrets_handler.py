@@ -1,6 +1,7 @@
 from threading import Lock
 from pathlib import Path
 from secrets import token_bytes
+from secrets import token_urlsafe
 import pickle
 
 
@@ -40,7 +41,7 @@ class SecretsHandler:
         pickle.dump(secrets, self._secrets_path.open("wb"))
 
     def __generate_new_identity(self):
-        return token_bytes(8)
+        return bytes(token_urlsafe(8), 'UTF-8')
 
     def __generate_new_secret(self):
         return token_bytes(32)

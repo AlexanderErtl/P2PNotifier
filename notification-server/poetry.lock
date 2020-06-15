@@ -106,7 +106,7 @@ marker = "sys_platform == \"darwin\""
 name = "pyobjc-core"
 optional = false
 python-versions = ">=3.6"
-version = "6.2"
+version = "6.2.1"
 
 [[package]]
 category = "main"
@@ -115,10 +115,10 @@ marker = "sys_platform == \"darwin\""
 name = "pyobjc-framework-cocoa"
 optional = false
 python-versions = ">=3.6"
-version = "6.2"
+version = "6.2.1"
 
 [package.dependencies]
-pyobjc-core = ">=6.2"
+pyobjc-core = ">=6.2.1"
 
 [[package]]
 category = "main"
@@ -127,11 +127,11 @@ marker = "sys_platform == \"darwin\""
 name = "pyobjc-framework-quartz"
 optional = false
 python-versions = ">=3.6"
-version = "6.2"
+version = "6.2.1"
 
 [package.dependencies]
-pyobjc-core = ">=6.2"
-pyobjc-framework-Cocoa = ">=6.2"
+pyobjc-core = ">=6.2.1"
+pyobjc-framework-Cocoa = ">=6.2.1"
 
 [[package]]
 category = "main"
@@ -227,7 +227,7 @@ description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
-version = "1.14.0"
+version = "1.15.0"
 
 [metadata]
 content-hash = "86b1884683a7661b38c1fc0b928cafc361e8ed69f6a4b695cbc534257cf9be8d"
@@ -355,25 +355,25 @@ pygobject = [
     {file = "PyGObject-3.36.1.tar.gz", hash = "sha256:012a589aec687bfa809a1ff9f5cd775dc7f6fcec1a6bc7fe88e1002a68f8ba34"},
 ]
 pyobjc-core = [
-    {file = "pyobjc-core-6.2.tar.gz", hash = "sha256:843b175e6bd6309c4457090ca52ca8e20cb1e6be19df1bc74d1ed1889f52149c"},
-    {file = "pyobjc_core-6.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:cb130c953c79cb2df4eb3976b7fe28c336b0de0dc550b0574eca8856c76cd147"},
-    {file = "pyobjc_core-6.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:ccfad6cba29652b005bc41e819ad70d203cc3e57a16e75e27bc4e6979034c7c0"},
-    {file = "pyobjc_core-6.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:6af32dc491c575346400c29649fffe6e0a1911553b9218529deafc56fa357bdd"},
-    {file = "pyobjc_core-6.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:8dd816c03fcbcbd8da8beb30dffe3aaaf8077d852cca4d636e3d7dd0ab48d39d"},
+    {file = "pyobjc-core-6.2.1.tar.gz", hash = "sha256:ea9ab7839a022668964ca8ab4f37dc75c04743354260370d463ebdce5c05aa38"},
+    {file = "pyobjc_core-6.2.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:492519af43f4364aefacbe1706d55c712f3c6b73e4702a40cebf25bdf0373182"},
+    {file = "pyobjc_core-6.2.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:ce883d94a50b3fc285f39ef0286bbe8c6b50e87f310c1dea8b82996a4f4dd135"},
+    {file = "pyobjc_core-6.2.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:503e42b9592dbc17cadb455fff3cfcc68caa00d3b815375ed9afb159b2722014"},
+    {file = "pyobjc_core-6.2.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:e68cec4f6d069fba1b3364b983abc9dff49763b58270f01904fc80ab8e7c4051"},
 ]
 pyobjc-framework-cocoa = [
-    {file = "pyobjc-framework-Cocoa-6.2.tar.gz", hash = "sha256:e15bbf82bfe3a14dfd29c7465cc5d8edab16d546410239b7e1a4db62ded4a5b2"},
-    {file = "pyobjc_framework_Cocoa-6.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:04b994a26bc30c912f2f5165d57a987f35889a36dd9c104674bc449c53649629"},
-    {file = "pyobjc_framework_Cocoa-6.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:09612dd81fafb6e1a8eb597b5e523c9de103a50af79e95afbf13b8a5937e3cfa"},
-    {file = "pyobjc_framework_Cocoa-6.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:cbe4f1917aa5def4a77fd4199a9697f3b4224acf59acf4e01fe9a7c73d49b08c"},
-    {file = "pyobjc_framework_Cocoa-6.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:ef3c21a8b37519e3a3880fc0c5539fe27afd3e0235c8ebc9c87b3d0354cbb4ea"},
+    {file = "pyobjc-framework-Cocoa-6.2.1.tar.gz", hash = "sha256:c41dc4b590a6bd10f60d2b979508a1b02c38664b3bcb2225f914439485a1551f"},
+    {file = "pyobjc_framework_Cocoa-6.2.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:d46b8587aeea09baa998a526d741162141a12660ef57f8114fc9dd67297c6045"},
+    {file = "pyobjc_framework_Cocoa-6.2.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:4c4ecb69f17d3291562fa5adfe55a20f4a9f03e25baac7d9fbe2e54aa1f17081"},
+    {file = "pyobjc_framework_Cocoa-6.2.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:94260a8366569625d5f9380b1b8c3b58a54a883a6412dcc47353f8bcce9da5b7"},
+    {file = "pyobjc_framework_Cocoa-6.2.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:17737dfd80b7e89f654413b52eb934b9c180442f60c728545b5404655a05f229"},
 ]
 pyobjc-framework-quartz = [
-    {file = "pyobjc-framework-Quartz-6.2.tar.gz", hash = "sha256:5133eef934143ed68014d73f7b3b8113441b3631d7a2c17f66839ea4b426c518"},
-    {file = "pyobjc_framework_Quartz-6.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:5250961ce781d6f9ee65486cd206cf6a7814b27e9e3eef1a73032cfb69ec4e5f"},
-    {file = "pyobjc_framework_Quartz-6.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:2b64baf09bde8864f5d858b51a28b724ea908638f30b50d5b3f1f82f0dc4835e"},
-    {file = "pyobjc_framework_Quartz-6.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:08ebaa3a9f4cf5a4de89e0df50d5bd535706900471f14ac42a3f4af1a7398ebb"},
-    {file = "pyobjc_framework_Quartz-6.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:906fb0d35e63057157816409b4eb0503ef1fa8e1a0a7176b637905076434379c"},
+    {file = "pyobjc-framework-Quartz-6.2.1.tar.gz", hash = "sha256:fd97fe55c6658ab9a44c2d2a1522166329b3af64c51fd9debc6e9c216c3ac253"},
+    {file = "pyobjc_framework_Quartz-6.2.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:f6d8e6da606f505bc4eefe2299ecfb7bdf09bf69d75145de6a13d14bd42fb3ca"},
+    {file = "pyobjc_framework_Quartz-6.2.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:b16305cc6a774b530464ba5d42be9b169c83edaad6ac13605a8187db3709a2a1"},
+    {file = "pyobjc_framework_Quartz-6.2.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:9d1343845e0c58a535813adcb48b9e4fef4e6ea27129c5d5426709fda4497793"},
+    {file = "pyobjc_framework_Quartz-6.2.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:48f065777b678205c0a78418797ad67b0abbc61eff0749796fee2c737b044f11"},
 ]
 pyopenssl = [
     {file = "pyOpenSSL-19.1.0-py2.py3-none-any.whl", hash = "sha256:621880965a720b8ece2f1b2f54ea2071966ab00e2970ad2ce11d596102063504"},
@@ -406,6 +406,6 @@ qrcode = [
     {file = "qrcode-6.1.tar.gz", hash = "sha256:505253854f607f2abf4d16092c61d4e9d511a3b4392e60bff957a68592b04369"},
 ]
 six = [
-    {file = "six-1.14.0-py2.py3-none-any.whl", hash = "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"},
-    {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
+    {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
+    {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
 ]

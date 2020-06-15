@@ -25,7 +25,7 @@ public class Utils {
 
     public static final String JSON_IDENTITY_KEY = "identity";
     public static final String JSON_SECRET_KEY = "secret";
-    public static final String JSON_IP_KEY = "ip";
+    public static final String JSON_ADDRESS_KEY = "addresses";
     public static final String JSON_PORT_KEY = "port";
 
     public static Utils getInstance() {
