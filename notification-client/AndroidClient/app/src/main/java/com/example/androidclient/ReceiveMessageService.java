@@ -118,7 +118,7 @@ public class ReceiveMessageService extends IntentService {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Failed to connect");
             Intent intentSocketState = new Intent();
             intentSocketState.setAction(Utils.INTENT_ACTION_SOCKET_STATE);

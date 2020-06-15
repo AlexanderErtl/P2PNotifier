@@ -131,16 +131,16 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (requestCode == SCAN_REQUEST) {
             if (resultCode == RESULT_OK) {
-                //String dataString = data.getDataString();
-                String dataString = null;
-                try {
+                String dataString = data.getDataString();
+                //String dataString = null;
+                /*try {
                     JSONObject obj = new JSONObject();
                     obj.put(Utils.JSON_IDENTITY_KEY, "qQh2Sckn7cA=");
                     obj.put(Utils.JSON_SECRET_KEY, "vReaezWS7VJWt51UMDyHzVIDPQddUyTpJRRG5dVJnjU=");
                     dataString = obj.toString();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                }*/
                 System.out.println(dataString);
                 try {
                     handleScanResult(dataString);

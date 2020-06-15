@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -31,7 +32,17 @@ public class MyPSKKeyManager implements org.conscrypt.PSKKeyManager {
     @Override
     public String chooseClientKeyIdentity(String identityHint, Socket socket) {
         System.out.println("chooseClientKeyIdentity: socket");
-        return "Client_identity";
+        String identity = "Client_identity";
+        try {
+            String data = Crypto.decrypt();
+            JSONObject jsonObject = new JSONObject(data);
+            String identityString = jsonObject.getString(Utils.JSON_IDENTITY_KEY);
+            identity = new String(Base64.decode(identityString, Base64.DEFAULT), StandardCharsets.UTF_8);
+        } catch (JSONException e) {
+            System.out.println("Failed to restore identity!");
+            e.printStackTrace();
+        }
+        return identity;
     }
 
     @Override
@@ -43,19 +54,18 @@ public class MyPSKKeyManager implements org.conscrypt.PSKKeyManager {
     @Override
     public SecretKey getKey(String identityHint, String identity, Socket socket) {
         System.out.println("getKey: socket");
-        byte[] keyBytes = null;
+        SecretKey key = null;
         try {
-            byte[] bytes = Crypto.decrypt();
-            JSONObject jsonObject = new JSONObject(bytes.toString());
-            String key = jsonObject.getString(Utils.JSON_SECRET_KEY);
-            keyBytes = Base64.decode(key, Base64.DEFAULT);
+            String data = Crypto.decrypt();
+            JSONObject jsonObject = new JSONObject(data);
+            String keyString = jsonObject.getString(Utils.JSON_SECRET_KEY);
+            byte[] keyBytes = Base64.decode(keyString, Base64.DEFAULT);
+            //byte[] keyBytes = new byte[] {0x1a, 0x2b, 0x3c, 0x4d};
+            key = new SecretKeySpec(keyBytes, "AES");
         } catch (JSONException e) {
+            System.out.println("Failed to restore secret key!");
             e.printStackTrace();
         }
-        //byte[] keyBytes = new byte[] {0x1a, 0x2b, 0x3c, 0x4d};
-        SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
-        System.out.println(key.getEncoded());
-        System.out.println(key);
         return key;
     }
 
